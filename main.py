@@ -224,7 +224,6 @@ def plot(m,T,c,fill=False,name=None):
 
 
 
-
 T = np.linspace(50,3500,2000)
 c = np.linspace(0,1,2000)
 gibbs = [gibbs_a,gibbs_b,gibbs_l]
