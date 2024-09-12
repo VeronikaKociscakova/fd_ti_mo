@@ -104,7 +104,7 @@ def gibbs_b(c_mo,
     f_term = 0
     mix_term = gibbs_mix(c_ti,c_mo,T)
     b_term = 10000 * c_mo * c_ti
-    c_term = 9000 * c_mo * c_ti * (c_ti - c_mo)
+    c_term = 9000 * c_mo * c_ti * (c_ti - c_mo) 
    
     energy = f_term + mix_term + b_term + c_term
    
@@ -141,6 +141,58 @@ def gibbs_a(c_mo,
     return energy
 
 
+def dd_gibbs_b(c_mo,T):
+    B = 10000
+    C = 9000
+    ddGb = -2*B + 6*(2*c_mo-1)*C + R*T/(c_mo*(1-c_mo))
+    return ddGb
+
+
+def d_gibbs_a(c_mo,T):
+    a_mo = 8368
+    b_mo = 0
+    a_ti = -4351
+    b_ti = 3.77
+    B = 24386
+    C = 0
+    dGa = (a_mo - a_ti 
+           + (1 - 2*c_mo)*B 
+           + (1-2*c_mo)*(1-2*c_mo)*C 
+           - 2*c_mo*(1-c_mo)*C 
+           + T*(b_mo - b_ti + R*np.log(c_mo/(1-c_mo))))
+    return dGa
+
+
+def d_gibbs_b(c_mo,T):
+    a_mo = 0
+    b_mo = 0
+    a_ti = 0
+    b_ti = 0
+    B = 10000
+    C = 9000
+    dGb = (a_mo - a_ti 
+           + (1 - 2*c_mo)*B 
+           + (1-2*c_mo)*(1-2*c_mo)*C 
+           - 2*c_mo*(1-c_mo)*C 
+           + T*(b_mo - b_ti + R*np.log(c_mo/(1-c_mo))))
+    return dGb
+
+
+def d_gibbs_l(c_mo,T):
+    a_mo = 24267
+    b_mo = -8.368
+    a_ti = 16234
+    b_ti = -8.368
+    B = 10136
+    C = 0
+    dGl = (a_mo - a_ti 
+           + (1 - 2*c_mo)*B 
+           + (1-2*c_mo)*(1-2*c_mo)*C 
+           - 2*c_mo*(1-c_mo)*C 
+           + T*(b_mo - b_ti + R*np.log(c_mo/(1-c_mo))))
+    return dGl
+
+
 #%% This section is only executed as this script is the main process.
 #   Otherwise (such as if imported by another script), this section is 
 #   not executed.
@@ -148,7 +200,7 @@ def gibbs_a(c_mo,
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
-    for T in [300,800,1500,3000,5000]: #K
+    for T in [300,500,800,1500,3000,5000]: #K
         x = np.linspace(0,100,1000) #at%
         plt.plot(x,gibbs_a(x/100, T),label="alpha")
         plt.plot(x,gibbs_b(x/100, T),label="beta")
